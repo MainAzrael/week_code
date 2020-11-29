@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        .add{
+            height: 300px;
+            background-color: chocolate;
+        }
+        .addOne{
+            height: 50px;
+        }
+        .hidden{
+            display: none;
+            width: 300px;
+            height:300px ;
+            background:rgb(49, 60, 156);
+            position: absolute;
+            top: 0;bottom: 0;
+            left: 0;right: 0;
+            margin: auto;
+            font-weight: 700;
+            text-align: center;
+            line-height: 40px;
+            opacity: 0.8;
+            
+        }
+        span{display: inline-block;width: 80px;text-align: center;}
+        input{height: 20px;}
+        table{
+            border-collapse: collapse;
+        }
+        /* button{
+            width: 100px;
+            height: 50px;
+        } */
+        td{
+            width: 200px;
+            height: 30px;
+            line-height: 50px;
+            text-align: center;
+            font-size: 20px;
+            border:1px solid #000;
+        }
+        .addbut{
+            width: 300px;
+            height: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="hidden">
+        <span>姓名:</span><input type="text" name="name1"><br>
+        <span>密码:</span><input type="text"name="pass1"><br>
+        <span>性别:</span><input type="text" name="gender1" ><br>
+        <span>email:</span><input type="text" name="email1"><br>
+        <span>手机号码:</span><input type="text" name="mobile1"><br>
+        <button name="amend" class="amend">修改</button>
+    </div>
+    <div></div>
+    <div class="add">
+        <div class="addOne">
+            <span>姓名:</span><input type="text" name="name">
+        </div>
+        <div class="addOne">
+            <span>密码:</span><input type="text"name="pass">
+        </div>
+        <div class="addOne">
+            <span>性别:</span><input type="text" name="gender" >
+        </div>
+        <div class="addOne">
+            <span>email:</span><input type="text" name="email">
+        </div>
+        <div class="addOne">
+            <span>手机号码:</span><input type="text" name="mobile">
+        </div>
+        <div class="addbut">
+            <button name="supmit" class="supmit">提交</button>
+        </div>
+    </div>
+    <table class="text">
+        <thead>
+            <tr>
+                <td><input type="checkbox">全选</td>
+                <td>姓名</td>
+                <td>密码</td>
+                <td>性别</td>
+                <td>email</td>
+                <td>手机号码</td>
+                <td><button name="chengebut" >修改</button><button name="deletebut">删除</button></td>
+            </tr>
+            <tbody></tbody>
+        </thead>
+    </table>
+    
+    <script src="./jquery.min.js"></script>
+    <script>
+        console.log(1231232131);
+        let get;
+        set()
+        let chen = '';
+        $('.supmit').click(()=>{
+            let name = $('[name="name"]').val();
+            let password = $('[name="pass"]').val();
+            let gender = $('[name="gender"]').val();
+            let email = $('[name="email"]').val();
+            let mobile = $('[name="mobile"]').val();         
+            console.log(name);
+            $.ajax({
+                url:'http://127.0.0.1:8080/add',
+                data:{
+                    username:name ,
+                    password:password,
+                    gender:gender,
+                    email:email,
+                    mobile:mobile
+                },
+                type:'post',
+                dataType:'json',
+                success: res=>{
+                    console.log(res);
+                }
+            })
+            set();
+        });
+        $('tbody').click(e=>{
+            if($(e.target).attr('name') === 'delete'){
+                let lang = $(e.target).attr('index');
+                $()
+                console.log(lang);
+                $.ajax({
+                    url:`http://127.0.0.1:8080/delete/${lang}`,
+                    data:{},
+                    type:'delete',
+                    dataType:'json',
+                    success:res =>{
+                        console.log(res);
+                        set();
+
+                    }
+                })
+            }
+
+            if($(e.target).attr('name')=== 'chenge'){
+                chen = $(e.target).attr('index')
+                $('.hidden').css({display:"block"})
+
+            }
+        })
+        $('[name="amend"]').click(()=>{
+            // let chen = $(e.target).attr('index')
+            let val = $('[name="id"]').val();
+            let name = $('[name="name1"]').val();
+            let password = $('[name="pass1"]').val();
+            let gender = $('[name="gender1"]').val();
+            let email = $('[name="email1"]').val();
+            let mobile = $('[name="mobile1"]').val(); 
+
+            $.ajax({
+                url:`http://127.0.0.1:8080/lose/${chen}`,
+                type:'get',
+                success:res=>{
+                    let lly = res.data;
+                    console.log(res);
+                    $.ajax({
+                        url:`http://127.0.0.1:8080/put/${chen}`,
+                        data:{
+                            username:name === '' ? lly.username: name,
+                            password:password === ''? lly.password:password,
+                            gender:gender ===''? lly.gender:gender,
+                            email:email ===''?lly.email:email,
+                            mobile:mobile ===''? lly.mobile:mobile
+                        },
+                        type:'put',
+                        dataType:'json',
+                        success:res=>{
+                            console.log(res);
+                            set()
+                        }
+                    })
+                }
+            })
+            $('.hidden').css({display:"none"})
+        })
+
+        function set(){
+            $.ajax({
+                url:'http://127.0.0.1:8080/list',
+                data:{},
+                type:'get',
+                dataType: 'json',
+                success:res=>{
+                    get = res.data;
+                    console.log(get);
+                    let int = '';
+                    get.forEach((v,k)=>{
+                        int +=`
+                        <tr>
+                            <td><input type="checkbox">反选</td>
+                            <td>${v.username}</td>
+                            <td>${v.password}</td>
+                            <td>${v.gender}</td>
+                            <td>${v.email}</td>
+                            <td>${v.mobile}</td>
+                            <td><button index=${v._id} name="chenge">修改</button><button index=${v._id} name="delete">删除</button></td>
+                        </tr>
+                        `;
+                    })
+                    $('tbody').html(int);
+                }
+            })
+
+        }
+        
+
+
+        
+    </script>
+</body>
+</html>
