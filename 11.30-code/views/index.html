@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面</title>
+</head>
+<body>
+    <h1>atr 测试学习</h1>
+    <hr>
+    <h2>基础变量</h2>
+    <p>标准写法: {{str}}</p>
+    <p>原始写法:<%=str%></p>
+    <hr>
+    <h2>条件判断</h2>
+    <p>
+        标准:
+        {{if(age >18)}}
+            成年那
+        {{else if(age=18)}}
+            刚刚好
+        {{else}}
+            未成年
+        {{/if}}
+    </p>
+    <p>
+        原始:
+        <%if(age > 18){%>
+            成年了
+        <%}else if(age == 18){%>
+            刚刚好
+        <%}else{%>
+            未成年
+        <%}%>
+    </p>
+    <p>
+        标准:
+        <ul>
+            {{each arr}}
+            <li>{{$index}} - {{$value}}</li>
+            {{/each}}
+        </ul>
+        <ul>
+            {{each arr val key}}
+            <li>{{key}} - {{val}}</li>
+            {{/each}}
+        </ul>
+        原始:
+        <ul>
+            <%for(var i = 0; i < arr.length;i++){%>
+                <li><%=i%> - <%=arr[i]%></li>
+            <%}%>
+        </ul>
+    </p>
+    <h2>模板文件</h2>
+    <p>标准写法：{{include "./inc.html"}}</p>
+    <p>原始写法：<%include("./inc.html")%></p>
+</body>
+</html>
