@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="set">
+        <ul>
+            <input type="checkbox" v-model="isCheckAll" @change="handler">
+            <button @click="antiSelect">反选</button>
+            <li v-for="(time,index) in cartData " :key="time.id" style="list-style: none;">
+                <input type="checkbox" :value="time.id" v-model="checkedArr" @change="isCheckedAll">
+                商品id: {{time.id}}
+                商品名称: {{time.name}}
+                商品价格: {{time.price}}
+                商品数量: <button @click="set(time , index)">-</button>{{time.num}}<button @click="add(time,index)">+</button>
+                商品小计: {{time.price * time.num}}
+            </li>
+        </ul>
+    </div>
+    </div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    var cartData = [
+        { id: 1, name: '苹果', num: 1, price: 100 },
+        { id: 2, name: '小米', num: 1, price: 200 },
+        { id: 3, name: '华为', num: 1, price: 300 },
+    ]
+    new Vue({
+        el: '#set',
+        data: {
+            cartData,
+            isCheckAll: false,
+            checkedArr: [],
+        },
+        methods: {
+            set: function (time, index) {
+                if (time.num === 1) {
+                    if (confirm("这么好的商品你确认就不买了吗？")) {
+                        this.cartData.splice(index, 1);
+                        let key = this.checkedArr.indexOf(item.id);
+                        if (key > -1) {
+                            // 删除选中记录
+                            this.checkedArr.splice(key, 1);
+                        }
+                    }
+                    return false;
+                }
+                time.num--;
+            },
+            add: function (time, index) {
+                time.num === 5 ? time.num : time.num++;
+            },
+            handler: function () {
+                this.checkedArr = [];
+                if (this.isCheckAll) {
+                    this.cartData.forEach((el) => {
+                        this.checkedArr.push(el.id)
+                    })
+                }
+            },
+            isCheckedAll: function () {
+                this.isCheckAll = this.checkedArr.length === this.cartData.length;
+            },
+            antiSelect:function (){
+                let tmp = [];
+                this.conData.forEach((el)=>{
+                    if(!this.checkedArr.includes(el.id)){
+                        tmp.push(el.id);
+                    }
+                })
+                this.checkedArr = tmp ;
+            }
+        }
+    })  
+</script>
+
+</html>

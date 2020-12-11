@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .class1 {
+            background: greenyellow;
+            color: #fff;
+        }
+
+        .class1 {
+            background: greenyellow;
+            color: #fff;
+        }
+
+        .class1 {
+            background: greenyellow;
+            color: #fff;
+        }
+
+        .class1 {
+            background: greenyellow;
+            color: #fff;
+        }
+
+        .class1 {
+            background: greenyellow;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div :class='{class1:arr.use1}' @click="set1('use1')">{{name1}}</div><input type="checkbox" v-model="arr.use1">
+        <div :class='{class1:arr.use2}' @click="set1('use2')">{{name2}}</div><input type="checkbox" v-model="arr.use2">
+        <div :class='{class1:arr.use3}' @click="set1('use3')">{{name3}}</div><input type="checkbox" v-model="arr.use3">
+        <div :class='{class1:arr.use4}' @click="set1('use4')">{{name4}}</div><input type="checkbox" v-model="arr.use4">
+        <div :class='{class1:arr.use5}' @click="set1('use5')">{{name5}}</div><input type="checkbox" v-model="arr.use5">
+        <input type="checkbox" @click="get" :checked='all' >
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            arr: {
+                use1: true,
+                use2: true,
+                use3: true,
+                use4: true,
+                use5: true,
+            },
+
+            all:true,
+
+            bool: true,
+            name1: "原始世界yssj",
+            name2: "原始世界yssj",
+            name3: "原始世界yssj",
+            name4: "原始世界yssj",
+            name5: "原始世界yssj",
+        },
+        methods: {
+            set1: function (index) {
+                let num = 0;
+                for(let i in this.arr){
+                    if( i === index ){
+                        this.arr[i] = !this.arr[i]
+                    }
+                    if( this.arr[i] === false ){
+                        this.all = false
+                    }
+                    if( this.arr[i] === true){
+                        num++;
+                        if( num === 5 ){
+                            this.all = true;
+                        }
+                    }
+                }
+            },
+            
+            get: function () {
+                for(let i in this.arr){
+                    this.arr[i] = !this.arr[i]
+                }
+            }
+        }
+    })
+</script>
+
+</html>

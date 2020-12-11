@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>手机号</th>
+                            <th>性别</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     {{each ret}}
+                        <tr>
+                            <td>{{@$value._id}}</td>
+                            <td>{{$value.username}}</td>
+                            <td>{{$value.email}}</td>
+                            <td>{{$value.mobile}}</td>
+                            <td>{{$value.gender === 1? "男": "女"}}</td>
+                            <td><aclass="label label-success edit" id="{{@$value._id}}">修改</a>|<a class="label label-danger">删除</a></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../layer/layer.js"></script>
+    <script>
+        
+    </script>
+</body>
+</html>

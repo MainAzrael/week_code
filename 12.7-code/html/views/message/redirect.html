@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <title>操作提示</title>
+        <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <link href="" rel="stylesheet" />
+        <style>
+            div {
+                width: 560px;
+                height: 150px;
+                border: 1px solid #cccccc;
+                margin: 100px auto;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <h2>{{msg}}</h2>
+            <p>
+                页面将在 {{second}} 秒后跳转，当您也可以点击<a href="{{url}}"
+                    >立即跳转。</a
+                >
+            </p>
+        </div>
+    </body>
+
+    <script>
+        setTimeout(() => {
+            top.location.href = "{{url}}";
+        }, 3000);
+    </script>
+</html>

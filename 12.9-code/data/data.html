@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <ul>
+                <li v-for="(time,index) in cshools" :key="index">{{time.area}}:{{time.counts}}所</li>
+            </ul>
+        </div>
+    </div>
+    <script src="../vue.js"></script>
+    <script src="./axios.min.js"></script>
+    <script src="./jquery.min.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                cshools:[],
+            },
+            created(){
+                axios.defaults.timeout = 3000;
+                const api = "https://api.i-lynn.cn/college";
+                //========================= axios方式请求网络传参==============================================
+                // axios(api).then((ret)=>{this.cshools = ret.data.list;console.log(ret.data);})
+               
+                // axios.get(api + "?type=2").then((ret)=>{this.cshools = ret.data.list;console.log(ret.data);})
+               
+                // axios.post(api,"type=2").then((ret)=>{this.cshools = ret.data.list})
+               
+                // axios({
+                //     method:'post',
+                //     url:api,
+                //     data:"type=2",
+                //     headers: {
+                //             "Content-Type": "application/x-www-form-urlencoded"
+                //         }
+                // }).then((ret)=>{this.cshools = ret.data.list})
+                //========================= fetch方式请求网络传参==============================================
+                // fetch(api).then(ret=>ret.json()).then(data=>this.cshools = data.list)
+                
+                // fetch(api+"?type=2").then(ret=>ret.json()).then(data=>this.cshools=data.list)
+                
+                // fetch(api,{
+                //     method: "post",
+                //     body:"type=2",
+                //     headers:{
+                //         "Content-Type": "application/x-wwww-foem-urlencoded",
+                //     }
+                // }).then(ret=>ret.json()).then(data=> this.cshools = data.list)
+                
+                // fetch(api ,{
+                //     method:"post",
+                //     data:{
+                //         type:2
+                //     },
+                //     headers:{
+                //         "Content-Type":"application/json"
+                //     }
+                // }).then(ret=>ret.json()).then(data=>  this.cshools = data.list)
+                //========================= jquery方式请求网络传参==============================================
+                $.ajax({
+                    url:api,
+                    type:"GET",
+                    dataType:"json",
+                    success:ret=>{console.log(this.cshools =ret.list);}
+                })
+
+
+
+
+
+            }
+            
+        })
+    </script>
+</body>
+</html>

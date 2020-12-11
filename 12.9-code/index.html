@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>{{msg | setdate(5)}}</div>
+        <div >{{min}}</div>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        Vue.filter("setdate",function(val){
+            return val.toUpperCase().substr(0,5)
+        });
+        var minux=({
+            data:{
+                min:"hello",
+            },
+            mothods:{
+                max:function(){
+                    console.log(this.min);
+                }
+            }
+        });
+        new Vue({
+            el:"#app",
+            data:{
+                msg:"asdfghjklqwertyuiop",
+            },
+            // filters:{
+            //     setdate:function(value){
+            //         return value.toUpperCase().substr(0,10);
+            //     }
+            // },
+
+            mixins:[minux],
+            
+        })
+    </script>
+</body>
+</html>

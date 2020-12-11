@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <input type="checkbox" v-model="ischeck" @change="carcheck">全选
+            <button @click="selection">反选</button>
+            <li v-for="(val,index) in cartData " :key="val.id" style="list-style: none;">
+                <input type="checkbox" :value="val.id" v-model="carCheckarr">
+                商品ID:{{val.id}}
+                产品名称:{{val.name}}
+                购买数量:<button @click="cheng(index,val)">-</button>{{val.num}}<button @click="add(index ,val)">+</button>
+                单价:{{val.price}}
+                单价总计:{{val.num * val.price}}
+            </li>
+            总价：￥{{totalamount}}元
+
+        </ul>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        var arrText = [
+            { id: 1, name: '苹果', num: 1, price: 100 },
+            { id: 2, name: '小米', num: 1, price: 200 },
+            { id: 3, name: '华为', num: 1, price: 300 },
+        ];
+        window.localStorage.setItem('act',JSON.stringify(arrText))
+        let cartData = JSON.parse(window.localStorage.getItem('act'));
+        new Vue({
+            el:"#app",
+            data:{
+                cartData,
+                ischeck:false,
+                carCheckarr:[]
+            },
+            methods:{
+                add:function(index, val){
+                    let set =JSON.parse(window.localStorage.getItem('act'));
+                    set[index].num++ ===  val.num++
+                    window.localStorage.setItem('act',JSON.stringify(set))
+                },
+                cheng:function(index,val){
+                    let set =JSON.parse(window.localStorage.getItem('act'));
+                    if(val.num === 1||set[index].num ===1){
+                        if(confirm("你确定不要这件物品了吗?")){
+                            this.cartData.splice(index, 1);
+                            let kety =this.carCheckarr.indexOf(val.id);
+                            window.localStorage.setItem('act',JSON.stringify(this.cartData))
+                            if(kety > -1){
+                                this.carCheckarr.splice(kety ,1);
+                            }
+                        }
+                        return false ;
+                    }
+                    set[index].num-- === val.num--;
+                    window.localStorage.setItem('act',JSON.stringify(this.cartData))
+                },
+                carcheck:function(){
+                    this.carCheckarr=[];
+                    if(this.ischeck){
+                        this.cartData.forEach((el)=>{
+                            this.carCheckarr.push(el.id);
+                        })
+                    }
+                },
+                selection:function(){
+                    let msg = [];
+                    this.cartData.forEach((el)=>{
+                        if(!this.carCheckarr.includes(el.id)){
+                            msg.push(el.id)
+                        }
+                    })
+                    this.carCheckarr=msg;
+                }
+            },
+            wacth:{
+                carCheckarr:function(){
+                    this.ischeck = this.cartData.length === this.carCheckarr.length;
+                    window.localStorage.setItem('act',JSON.stringify(this.carCheckarr))
+                }
+            },
+            computed:{
+                totalamount:function(){
+                    let int = 0 ;
+                    this.cartData.forEach((el)=>{
+                        if(this.carCheckarr.includes(el.id)){
+                            int += el.num * el.price;
+                        }
+                    })
+                    return int;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

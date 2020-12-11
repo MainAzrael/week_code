@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>手机号</th>
+                            <th>性别</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <tr class="info">
+        <td></td>
+        <td></td>
+    </tr>
+    <script src="../js/jquery.min.js"></script>
+    <script src="./layer/layer.js"></script>
+    <script>
+        $(function(){
+            $.get('/list').then((ret) => {
+                console.log(ret);
+                if (ret.code === 1) {
+                    let int = "";
+                    ret.data.forEach((el) => {
+                        int += `
+                        <tr>
+                            <td>${el._id}</td>
+                            <td>${el.username}</td>
+                            <td>${el.email}</td>
+                            <td>${el.mobile}</td>
+                            <td>${el.gender === 1 ? "男":"女"}</td>
+                            <td><a class="label label-success edit" _id="${el._id}">修改</a> | <a class="label label-info delete">删除</a></td
+                        </tr> `;
+  
+                    })
+                    $("tbody").html(int);
+                }else{
+                    alyer.msg("获取数据失败", {icon:5})
+                }
+            })
+            $("tbody").on("click" , ".edit",function(){
+                let _id = $(this).attr("_id");
+                layer.open({
+                    type:2,
+                    shadeClose: true,
+                    shade: false,
+                    maxmin: true, //开启最大化最小化按钮
+                    area: ["600px", "420px"],
+                    content: "/edit.html?id=" + _id,
+                })
+            })
+        })
+    </script>
+</body>
+
+
+
+</html>

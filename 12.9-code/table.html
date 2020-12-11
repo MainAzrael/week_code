@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        .top {
+            height: 10vh;
+            background: #000;
+            line-height: 10vh;
+        }
+
+        .top>span {
+            color: #fff;
+            margin-left: 500px;
+            font-size: 30px;
+        }
+
+        section {
+            height: 90vh;
+            background: #ccc;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <div class="top">
+            <span>ToDoList</span>
+            <input type="text" placeholder="添加ToDoList" v-model='msg' v-on:keyup.enter='submit(msg)'>
+        </div>
+        <section>
+            <h2>正在进行 <span id="todocount">{{arr.length}}</span></h2>
+            <ol id="todolist">
+                <li v-for="(val,key) in arr"> <input type="checkbox" class='one' v-model="textarr" :value="key"
+                        @change=checkArr(val)> {{val.titme}}</li>
+            </ol>
+            <h2>已经完成 <span id="donecount"></span></h2>
+            <ul id="donelist">
+                 <li v-for="(val,key) in arr2" > <input type="checkbox" checked> {{val.titme}}</li>
+            </ul>
+        </section>
+    </div>
+    <script src="./vue.js"></script>
+    <script src="../../js文件/bk-2003-刘云海/jquery.min.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                bool: false,
+                msg: '',
+                arr: [],
+                textarr: [],
+                arr2:[]
+            },
+            methods: {
+                submit: function (val) {
+                    if (val !== '') {
+                        let int = { titme: val, bool: this.bool }
+                        this.arr.push(int);
+                        window.localStorage.setItem('int', JSON.stringify(this.arr))
+                        this.msg = '';
+                    }
+                },
+                checkArr: function (val) {
+                    let setint = JSON.parse(window.localStorage.getItem('int'));
+                    this.textarr.forEach((el) => {
+                        setint[el].bool = true
+                    })
+                    window.localStorage.setItem('int', JSON.stringify(setint))
+                    
+
+
+                },
+            },
+            watch: {
+                textarr: function (newVal, oldVal) {
+                   
+                    console.log(newVal, oldVal.length);
+                    let setint = JSON.parse(window.localStorage.getItem('int'));
+                    oldVal.forEach(v=>{
+                        setint[v].bool = false;
+                    })
+                    window.localStorage.setItem('int', JSON.stringify(setint))
+
+                },
+                arr:function(val){
+                    
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

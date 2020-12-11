@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        .top {
+            height: 10vh;
+            background: #000;
+            line-height: 10vh;
+        }
+
+        .top>span {
+            color: #fff;
+            margin-left: 500px;
+            font-size: 30px;
+        }
+
+        section {
+            height: 90vh;
+            background: #ccc;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <div class="top">
+            <span>ToDoList</span>
+            <input type="text" placeholder="添加ToDoList" v-model='msg' v-on:keyup.enter='submit(msg)'>
+        </div>
+        <section>
+            <h2>正在进行 <span id="todocount">{{arr.length}}</span></h2>
+            <ol id="todolist">
+                <li v-for="(val,key) in arr"> <input type="checkbox" v-model="checkArr" :value="key" v-model="bool"> {{val}}</li>
+            </ol>
+            <h2>已经完成 <span id="donecount">{{arr2.length}}</span></h2>
+            <ul id="donelist">
+                <li v-for="(val,key) in arr2"><input type="checkbox" v-model="checkArr2" :value="key" >{{val}} <button @click="del(key)">删除</button></li>
+            </ul>
+        </section>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                msg: '',
+                arr: [],
+                checkArr: [],
+                arr2: [],
+                checkArr2: [],
+                textarr:{},
+                bool:false,
+            },
+            methods: {
+                submit: function (val) {
+                    if( val === '' ){
+                        return false;
+                    }
+                    this.arr.push(val);
+                    this.msg = '';
+                },
+                del:function(key){
+                    this.checkArr2.splice(this.checkArr2.indexOf(key),1)
+                    this.arr2.splice(key,1)
+                }
+            },
+            watch: {
+                checkArr: function (newVal) {
+
+                    newVal.forEach((v, k) => {
+                        this.arr2.push(this.arr[v])
+                    })
+                    let tmp = []
+                    this.arr2.forEach((v, k) => {
+                        if (tmp.indexOf(v) === -1) {
+                            tmp.push(v)
+                        }
+                    })
+                    this.arr2 = tmp;
+                        this.arr.forEach((v, k) => {
+                            if (this.arr2.indexOf(v) !== -1) {
+                                this.arr.splice(k, 1)
+                                this.checkArr = []
+                                
+                            }
+                        })
+                    this.arr2.forEach((v,k)=>{
+                        this.checkArr2.push(k)
+                    })
+                    let tmp2 = [];
+                    this.checkArr2.forEach((v,k)=>{
+                        if( tmp2.indexOf(v) === -1 ){
+                            tmp2.push(v)
+                        }
+                    })
+                    this.checkArr2 = tmp2;
+
+                },
+                checkArr2:function(){
+                  
+                    this.arr2.forEach((v,k)=>{
+                        if( this.checkArr2.indexOf(k) === -1 ){
+                            this.arr.push(v);
+                            this.arr2.splice(k,1)
+                            
+                        }
+                      
+                    })
+                    let tmp = [];
+                    this.arr.forEach((v,k)=>{
+                        if( tmp.indexOf(v) === -1 ){
+                            tmp.push(v)
+                        }
+                    })
+                    this.arr = tmp;
+                    
+                    
+                }
+
+            },
+           
+        })
+    </script>
+</body>
+
+</html>

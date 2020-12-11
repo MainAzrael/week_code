@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+        #big{
+            width: 1000px;
+            height: 600px;
+            background: green;
+        }
+        #min{
+            width: 800px;
+            height: 400px;
+            background:greenyellow;
+        }
+        #sma{
+            width: 600px;
+            height: 200px;
+            background:red;
+        }
+        .class1{
+            background: red;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <!-- v-cloak 闪动问题 -->
+    <div id="app" v-cloak >  
+        <div v-show='use'>
+            <input type="checkbox" v-model="use" id="r1">
+            <div :class="{'class1':use}">{{get}}</div>
+            <a :href="url">{{name}}</a>
+            <div>{{type}}</div>
+            <div>{{name}}</div>
+            <!-- 只渲染一次  之后不会发生任何改变  v-once -->
+            <div v-once>{{name}}</div>
+            <button v-on:click='num++'>点击</button><div>{{num}}</div>
+            <button @click='num++'>点击</button><div>{{num}}</div>
+            <button @click="say( get , $event)">{{get}}</button>
+            <div id="big" @click="int('大娃' , $event)">
+                {{get}}
+                <div id="min" @click.stop="int('二娃' , $event)">
+                    {{get}}
+                    <div id="sma" @click.stop="int('三娃' , $event)">
+                        {{get}}
+                    </div>
+                </div>
+            </div>
+            <input type="text" @keyup.enter="submit">
+        </div>
+    </div>
+    <div id="set">
+        <div v-show='use'>
+            <div v-if="sge <= 16"> 未成年</div>
+            <div v-else-if="sge >= 16 && sge <= 18"> 青年</div>
+            <div v-else-if="sge >= 18  && sge <=30"> 成年</div>
+            <div v-if="sge >30">老年</div>
+            <hr>
+            <ul >
+                <input type="checkbox" >
+                <li v-for="(val,key,index) in cartData " >
+                    <input type="checkbox" >
+                    商品id: {{val.id}}
+                    商品名称: {{val.name}}
+                    商品价格: {{val.price}}
+                    商品数量: <button @click="set(val , index)">-</button>{{val.num}}<button @click="add(val,index)">+</button>
+                    商品小计: {{val.price * val.num}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="add">
+        <div v-show="user">
+            <div :class="{class1:bools}" >
+                {{names}}
+            </div>
+            <button v-model="bools">+</button>
+            
+
+        </div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    new Vue({
+        el:'#app',
+        data:{
+            use: true ,
+            url:'https://www.fliggy.com/',
+            type: 'blank',
+            name: '飞猪旅行',
+            num: '0' , 
+            sty: '你的世界我不去',
+            get: '世界起源',
+            
+        },
+        methods:{
+            say:function(set , $event){
+                $event.set = set ;
+                console.log($event.set);
+            },
+            int:function(name,event){
+                console.log('你点了' + name);
+            }
+        }
+    })
+    var cartData = [
+        {id:1,name:'苹果',num:1,price:100},
+        {id:2,name:'小米',num:1,price:200},
+        {id:3,name:'华为',num:1,price:300},
+    ]
+    new Vue({
+            el:'#set',
+            data:{
+                cartData,
+                sge: 40,
+                bool:true,
+                use:true,
+            },
+            methods:{
+                set:function(time, index){
+                    if(time.num === 1){
+                        confirm('你确定吗?') && this.cartData.splice(index , 1)
+                        return false ;
+                    } 
+                    time.num-- ;
+                },
+                add:function(time , index){
+                    time.num === 5 ? time.num : time.num++ ;
+                    
+                }
+            }
+        })  
+    new Vue({
+            el:'#add',
+            data:{
+                user:true,
+                names:"原始文件",
+                pass:"历史记录",
+                bools:true,
+                isweb:false ,
+            },
+            methods:{
+                boolname:function(set){
+
+                }
+            }
+        })
+</script>
+</html>

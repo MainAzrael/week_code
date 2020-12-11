@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .class1{
+            background: greenyellow;
+            color: #000;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="checkbox" name="check" v-model='use'>
+        <p :class='{class1:use}'>{{data}}</p><input type="text" name="check" v-model="data" v-show="use">
+        <hr>
+        <input type="checkbox" name="check" v-model="bool"><p>{{data}}</p>
+        <textarea name="checkbox"cols="30" rows="10">{{data}} + {{name}}</textarea>
+        <p >{{set()}}</p>
+       <input type="checkbox" name="checkbox"  v-model="bool"> <span v-show="bool">{{data}}</span>
+       <input type="checkbox" name="checkbox"  v-model="bool"> <span v-show="bool">{{data}}</span>
+       <input type="checkbox" name="checkbox"  v-model="bool"> <span v-show="bool">{{data}}</span>
+       <input type="checkbox" name="checkbox"  v-model="bool"> <span v-show="bool">{{data}}</span>
+       <input type="checkbox" name="checkbox"  v-model="bool"> <span v-show="bool">{{data}}</span>
+       <input type="checkbox" name="checkbox"  v-model="bool"> <span v-show="bool">{{data}}</span>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    const vm =new Vue({
+        el:'#app',
+        data:{
+            data:" 变革事件",
+            use: false,
+            bool:true,
+            name:"变革事件!",
+        },
+        methods:{
+            set:function(){
+                return this.name.split('').reverse().join('');
+            }
+            
+        }
+    })
+    // vm.watch = this . data 
+    // vm.site = 魔动世界;
+    // document.write = 'data' + vm.site;
+
+</script>
+</html>
